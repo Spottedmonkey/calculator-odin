@@ -20,21 +20,47 @@ const deleteBtn = document.querySelector("#delete-btn");
 
 let add = (number1, number2) => number1 + number2;
 
-console.log(add(3, 4));
-
 let subtract = (number1, number2) => number1 - number2;
-
-console.log(subtract(3, 4));
 
 let multiply = (number1, number2) => number1 * number2;
 
-console.log(multiply(3, 4));
-
 let divide = (number1, number2) => number1 / number2;
 
-console.log(divide(3, 4));
+let equation = "";
 
-let equation = [];
+function storeEquation(character) {
+  equation += character;
+  header.textContent = equation;
+}
+
+function filtersArrOperands(arr) {
+  let splitArr = arr.split("");
+  let plusOperands = splitArr.filter((item) => item === "+").join("");
+  let minusOperand = splitArr.filter((item) => item === "-").join("");
+  let multiplyOperand = splitArr.filter((item) => item === "*").join("");
+  let divideOperand = splitArr.filter((item) => item === "/").join("");
+  let totalOperands =
+    plusOperands + minusOperand + multiplyOperand + divideOperand;
+
+  return totalOperands.split("").length;
+}
+
+function calculateArray(arr) {
+  let newArr = arr.split(" ");
+
+  for (let i = 0; i < filtersArrOperands(arr); i++) {
+    let num1 = Number(newArr[0]);
+    let operand = newArr[1];
+    let num2 = Number(newArr[2]);
+    let calculatedSplit = operate(num1, operand, num2).join("");
+    console.log(newArr);
+    console.log(calculatedSplit);
+    newArr.splice(0, 3, calculatedSplit);
+    console.log(newArr);
+  }
+
+  return newArr;
+}
 
 function operate(num1, operand, num2) {
   return operand === "+"
@@ -45,119 +71,96 @@ function operate(num1, operand, num2) {
     ? (equation = [multiply(num1, num2)])
     : operand === "/"
     ? (equation = [divide(num1, num2)])
-    : "My kitty is prettier than yours";
+    : "ERROR";
 }
 
 clearBtn.addEventListener("click", () => {
-  header.textContent = "";
-  equation = [];
+  equation = "";
+  header.textContent = equation;
   console.log(equation);
 });
 
 divideBtn.addEventListener("click", () => {
-  header.textContent += "/";
-  equation.push(" / ");
+  storeEquation(" / ");
 });
 
 sevenBtn.addEventListener("click", () => {
-  header.textContent += 7;
-  equation.push(7);
+  storeEquation(7);
   console.log(equation);
 });
 
 eightBtn.addEventListener("click", () => {
-  header.textContent += 8;
-  equation.push(8);
+  storeEquation(8);
   console.log(equation);
 });
 
 nineBtn.addEventListener("click", () => {
-  header.textContent += 9;
-  equation.push(9);
+  storeEquation(9);
   console.log(equation);
 });
 
 multiplyBtn.addEventListener("click", () => {
-  header.textContent += "x";
-  equation.push(" * ");
+  storeEquation(" * ");
   console.log(equation);
 });
 
 fourBtn.addEventListener("click", () => {
-  header.textContent += 4;
-  equation.push(4);
+  storeEquation(4);
   console.log(equation);
 });
 
 fiveBtn.addEventListener("click", () => {
-  header.textContent += 5;
-  equation.push(5);
+  storeEquation(5);
   console.log(equation);
 });
 
 sixBtn.addEventListener("click", () => {
-  header.textContent += 6;
-  equation.push(6);
+  storeEquation(6);
   console.log(equation);
 });
 
 minusBtn.addEventListener("click", () => {
-  header.textContent += "-";
-  equation.push(" - ");
+  storeEquation(" - ");
   console.log(equation);
 });
 
 oneBtn.addEventListener("click", () => {
-  header.textContent += 1;
-  equation.push(1);
+  storeEquation(1);
   console.log(equation);
 });
 
 twoBtn.addEventListener("click", () => {
-  header.textContent += 2;
-  equation.push(2);
+  storeEquation(2);
   console.log(equation);
 });
 
 threeBtn.addEventListener("click", () => {
-  header.textContent += 3;
-  equation.push(3);
+  storeEquation(3);
   console.log(equation);
 });
 
 plusBtn.addEventListener("click", () => {
-  header.textContent += "+";
-  equation.push(" + ");
+  storeEquation(" + ");
   console.log(equation);
 });
 
 zeroBtn.addEventListener("click", () => {
-  header.textContent += 0;
-  equation.push(0);
+  storeEquation(0);
   console.log(equation);
 });
 
 periodBtn.addEventListener("click", () => {
-  header.textContent += ".";
-  equation.push(".");
+  storeEquation(" . ");
   console.log(equation);
 });
 
 equalBtn.addEventListener("click", () => {
-  equation = equation.toString().split(",").join("").split(" ");
-  let num1 = Number(equation[0]);
-  let operand = equation[1];
-  let num2 = Number(equation[2]);
-  header.textContent = operate(num1, operand, num2);
-  console.log(equation);
-  console.log(num1);
-  console.log(operand);
-  console.log(num2);
-  console.log(operate(num1, operand, num2));
+  calculateArray(equation);
+  header.textContent = equation;
 });
 
 deleteBtn.addEventListener("click", () => {
-  header.textContent -= "";
-  equation.pop();
+  equation = equation.replace(equation.at(-1), "");
+  header.textContent = equation;
   console.log(equation);
 });

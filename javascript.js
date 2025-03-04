@@ -1,5 +1,7 @@
 const header = document.querySelector("#header");
 const clearBtn = document.querySelector("#clear-btn");
+const percentageBtn = document.querySelector("#percentage");
+const plusMinusBtn = document.querySelector("#plus-minus");
 const divideBtn = document.querySelector("#divide-btn");
 const sevenBtn = document.querySelector("#seven-btn");
 const eightBtn = document.querySelector("#eight-btn");
@@ -45,9 +47,17 @@ function divide(number1, number2) {
   return Number(calculatedNumber.toFixed(2));
 }
 
+function percentageByOneHundred(number1) {
+  number1 = Number(number1);
+  let calculatedNumber = number1 / 100;
+  return Number(calculatedNumber.toFixed(2));
+}
+
 let num1 = "";
 let operand = "";
 let num2 = "";
+const placeHolderNumber = "0";
+header.textContent = placeHolderNumber;
 
 function storeEquation(character) {
   if (operand.length < 1) {
@@ -60,8 +70,16 @@ function storeEquation(character) {
 }
 
 function storeOperand(character) {
-  operand = "";
-  operand += character;
+  if (operand === "") {
+    operand += character;
+  } else if (operand.length === 1) {
+    let result = operate(num1, operand, num2);
+    num1 = String(result);
+    header.textContent = result;
+    operand = "";
+    operand += character;
+    num2 = "";
+  }
 }
 
 function operate(num1, operand, num2) {
@@ -73,6 +91,8 @@ function operate(num1, operand, num2) {
     return multiply(num1, num2);
   } else if (operand === "/") {
     return divide(num1, num2);
+  } else if (operand === "%") {
+    return percentageByOneHundred(num1);
   } else {
     ("ERROR");
   }
@@ -82,7 +102,27 @@ clearBtn.addEventListener("click", () => {
   num1 = "";
   operand = "";
   num2 = "";
-  header.textContent = "";
+  header.textContent = placeHolderNumber;
+  periodBtn.disabled = false;
+});
+
+plusMinusBtn.addEventListener("click", () => {
+  if (num1[0] === "-") {
+    num1 = String("" - num1);
+    header.textContent = num1;
+  } else {
+    num1 = "-" + num1;
+    header.textContent = num1;
+  }
+});
+
+percentageBtn.addEventListener("click", () => {
+  storeOperand("%");
+  let result = operate(num1, operand, num2);
+  num1 = String(result);
+  header.textContent = result;
+  operand = "";
+  num2 = "";
 });
 
 divideBtn.addEventListener("click", () => {
@@ -146,11 +186,30 @@ periodBtn.addEventListener("click", () => {
 });
 
 equalBtn.addEventListener("click", () => {
-  let result = operate(num1, operand, num2);
-  num1 = String(result);
-  header.textContent = result;
-  operand = "";
-  num2 = "";
+  if (num1 === "" || operand === "" || num2 === "") {
+    header.textContent === num1;
+    operand = "";
+    num2 = "";
+  } else if (operand === "/" && num2 === "0") {
+    header.textContent = "-0_0-";
+    num1 = "";
+    operand = "";
+    num2 = "";
+  } else {
+    let result = operate(num1, operand, num2);
+    num1 = String(result);
+    header.textContent = result;
+    operand = "";
+    num2 = "";
+  }
 });
 
-deleteBtn.addEventListener("click", () => {});
+deleteBtn.addEventListener("click", () => {
+  if (operand === "") {
+    header.textContent = num1.slice(0, -1);
+    num1 = num1.slice(0, -1);
+  } else {
+    header.textContent = num2.slice(0, -1);
+    num2 = num2.slice(0, -1);
+  }
+});

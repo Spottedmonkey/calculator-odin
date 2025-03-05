@@ -111,12 +111,22 @@ function toggleDecimalBtn() {
   }
 }
 
+function setActiveOperand(button) {
+  const operandButtons = document.querySelectorAll(".operand");
+  operandButtons.forEach((btn) => btn.classList.remove("active"));
+  button.classList.add("active");
+}
+
 clearBtn.addEventListener("click", () => {
   num1 = "";
   operand = "";
   num2 = "";
   header.textContent = placeHolderNumber;
   decimalBtn.disabled = false;
+
+  document
+    .querySelectorAll(".operand")
+    .forEach((btn) => btn.classList.remove("active"));
 });
 
 plusMinusBtn.addEventListener("click", () => {
@@ -144,6 +154,7 @@ percentageBtn.addEventListener("click", () => {
 
 divideBtn.addEventListener("click", () => {
   storeOperand("/");
+  setActiveOperand(divideBtn);
   toggleDecimalBtn();
 });
 
@@ -164,6 +175,7 @@ nineBtn.addEventListener("click", () => {
 
 multiplyBtn.addEventListener("click", () => {
   storeOperand("*");
+  setActiveOperand(multiplyBtn);
   toggleDecimalBtn();
 });
 
@@ -184,6 +196,7 @@ sixBtn.addEventListener("click", () => {
 
 minusBtn.addEventListener("click", () => {
   storeOperand("-");
+  setActiveOperand(minusBtn);
   toggleDecimalBtn();
 });
 
@@ -204,6 +217,7 @@ threeBtn.addEventListener("click", () => {
 
 plusBtn.addEventListener("click", () => {
   storeOperand("+");
+  setActiveOperand(plusBtn);
   toggleDecimalBtn();
 });
 
@@ -236,6 +250,9 @@ equalBtn.addEventListener("click", () => {
   }
 
   toggleDecimalBtn();
+  document
+    .querySelectorAll(".operand")
+    .forEach((btn) => btn.classList.remove("active"));
 });
 
 deleteBtn.addEventListener("click", () => {
